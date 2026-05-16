@@ -1,4 +1,5 @@
 {
+  self,
   inputs,
   ...
 }:
@@ -7,9 +8,16 @@
     {
       wlib,
       pkgs,
+      lib,
       ...
     }:
     let
+      theme = self.theme;
+
+      themeColors = pkgs.writeText "andromeda.conf" (
+        lib.concatStringsSep "\n" (lib.mapAttrsToList (name: value: "${name}=\"${value}\"") theme.palette)
+      );
+
       tmuxTether = inputs.tmux-tether.packages.${pkgs.system}.default;
     in
     {
@@ -101,7 +109,7 @@
         bind -r C-l run "tmux select-pane -R"
 
         # Theme
-        source-file ${./etc/themes/colors/andromeda.conf}
+        source-file ${themeColors}
         source-file ${./etc/themes/bubbles.conf}
       '';
     };

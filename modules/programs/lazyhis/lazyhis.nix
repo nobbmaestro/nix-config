@@ -3,6 +3,9 @@
   inputs,
   ...
 }:
+let
+  theme = self.theme;
+in
 {
   flake.wrappers.lazyhis =
     {
@@ -44,15 +47,15 @@
           persistentFilterModes = [ "UNIQUE_FILTER" ];
 
           theme = {
-            borderColor = "#3a3e4b";
-            versionFgColor = "#00e8c6";
-            helpFgColor = "#606064";
-            helpAccentColor = "#00e8c6";
-            inputFgColor = "#d5ced9";
-            filterFgColor = "#606064";
-            tableCursorFgColor = "#00e8c6";
-            tableCursorBgColor = "#2f323c";
-            tableLabelsFgColor = "#d5ced9";
+            borderColor = theme.selection;
+            versionFgColor = theme.accent;
+            helpFgColor = theme.muted;
+            helpAccentColor = theme.accent;
+            inputFgColor = theme.fg;
+            filterFgColor = theme.muted;
+            tableCursorFgColor = theme.accent;
+            tableCursorBgColor = theme.bg_alt;
+            tableLabelsFgColor = theme.fg;
           };
         };
 
