@@ -119,7 +119,7 @@
         ];
       };
 
-      extraPackages = with pkgs; [
+      runtimePkgs = with pkgs; [
         rsyncer
 
         # bash
