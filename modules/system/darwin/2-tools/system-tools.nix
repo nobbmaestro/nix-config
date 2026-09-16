@@ -6,6 +6,8 @@
   flake.modules.darwin.system-tools = {
     imports = with inputs.self.modules.darwin; [
       system-shell
+
+      claude-code
     ];
   };
 
@@ -15,6 +17,7 @@
       imports = with inputs.self.modules.homeManager; [
         system-shell
 
+        claude-code
         direnv
         fzf
         git
@@ -41,7 +44,6 @@
           # dev
           arduino-cli
           bear
-          claude-code
           docker
           git-fame
           gitlab-ci-local

@@ -26,6 +26,10 @@
     git-hooks-nix.url = "github:cachix/git-hooks.nix";
 
     # programs
+    claude-code = {
+      url = "github:sadjow/claude-code-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     lazyhis = {
       url = "github:nobbmaestro/lazyhis";
       inputs.nixpkgs.follows = "nixpkgs";
