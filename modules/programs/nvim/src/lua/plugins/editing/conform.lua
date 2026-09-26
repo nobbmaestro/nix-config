@@ -9,6 +9,14 @@ vim.keymap.set("n", "<leader>f", function()
 end, { desc = "Format buffer" })
 
 require("conform").setup({
+    formatters = {
+        robotidy = {
+            command = "robotidy",
+            args = { "$FILENAME" },
+            stdin = false,
+        },
+    },
+
     formatters_by_ft = {
         arduino = { "clang_format" },
         bash = { "shfmt" },
@@ -17,6 +25,7 @@ require("conform").setup({
         lua = { "stylua" },
         nix = { "nixfmt" },
         python = { "ruff_organize_imports", "ruff_format" },
+        robot = { "robotidy" },
 
         markdown = { "prettier" },
         javascript = { "prettier" },

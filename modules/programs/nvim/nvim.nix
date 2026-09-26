@@ -139,6 +139,7 @@
 
         # python
         pyright
+        robotframework-tidy
         ruff
 
         # lua
