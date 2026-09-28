@@ -44,7 +44,7 @@
           # dev
           arduino-cli
           bear
-          docker
+          colima
           git-fame
           gitlab-ci-local
           picocom
