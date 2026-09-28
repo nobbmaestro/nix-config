@@ -14,6 +14,7 @@
       programs.zsh = {
         enable = true;
         dotDir = config.xdg.configHome + "/zsh";
+        completionInit = "autoload -U compinit && compinit -u";
 
         shellAliases = {
           c = "clear";
