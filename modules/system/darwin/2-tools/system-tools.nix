@@ -22,6 +22,7 @@
 
       packages =
         (with inputs.self.packages.${pkgs.system}; [
+          lazydocker
           neovim
           tmux
           yazi
