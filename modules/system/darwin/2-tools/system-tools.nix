@@ -17,6 +17,7 @@
       packages =
         (with inputs.self.packages.${pkgs.system}; [
           neovim
+          yazi
         ])
         ++ (with pkgs; [
           curl
@@ -55,7 +56,6 @@
       lazydocker
       lazygit
       tmux
-      yazi
     ];
   };
 }
