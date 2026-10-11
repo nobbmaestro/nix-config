@@ -1,7 +1,22 @@
 {
-  flake.modules.homeManager.starship = {
-    programs.starship = {
-      enable = true;
+  self,
+  inputs,
+  ...
+}:
+{
+  perSystem =
+    { pkgs, ... }:
+    {
+      packages.starship = inputs.wrapper-modules.lib.evalPackage [
+        self.modules.starship.main
+        { inherit pkgs; }
+      ];
+    };
+
+  flake.modules.starship.main =
+    { wlib, ... }:
+    {
+      imports = [ wlib.wrapperModules.starship ];
 
       settings = {
         format = "$directory$git_branch$git_status$line_break$character";
@@ -135,5 +150,15 @@
         };
       };
     };
-  };
+
+  flake.modules.homeManager.starship =
+    { pkgs, ... }:
+    let
+      starship = inputs.self.packages.${pkgs.system}.starship;
+    in
+    {
+      programs.zsh.initContent = ''
+        eval "$(${starship}/bin/starship init zsh)"
+      '';
+    };
 }

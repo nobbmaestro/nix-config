@@ -14,6 +14,10 @@
   flake.modules.hjem.system-tools =
     { pkgs, ... }:
     {
+      imports = with inputs.self.modules.hjem; [
+        system-shell
+      ];
+
       packages =
         (with inputs.self.packages.${pkgs.system}; [
           neovim
@@ -40,7 +44,6 @@
           speedtest-cli
 
           # shell
-          starship
           zoxide
         ]);
     };
