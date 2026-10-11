@@ -47,21 +47,6 @@ in
         system-desktop
       ];
       home.username = "${username}";
-
-      programs.git = {
-        enable = true;
-
-        settings = {
-          user = {
-            name = "Norbert Batiuk";
-            email = "norbert.batiuk@stagesmarts.com";
-          };
-
-          "http \"https://git.intelitech.lv/\"" = {
-            sslVerify = false;
-          };
-        };
-      };
     };
 
   flake.modules.hjem."${username}" =
@@ -71,9 +56,21 @@ in
         system-desktop
       ];
 
-      packages = with pkgs; [
+      packages = [
+        (inputs.self.lib.mkGit pkgs {
+          settings = {
+            user = {
+              name = "Norbert Batiuk";
+              email = "norbert.batiuk@stagesmarts.com";
+            };
+
+            "http \"https://git.intelitech.lv/\"".sslVerify = false;
+          };
+        })
+      ]
+      ++ (with pkgs; [
         keepassxc
         firefox
-      ];
+      ]);
     };
 }

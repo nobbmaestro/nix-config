@@ -60,7 +60,6 @@
       claude-code
       direnv
       fzf
-      git
       lazydocker
       lazygit
     ];

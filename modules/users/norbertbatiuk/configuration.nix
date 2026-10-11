@@ -37,19 +37,22 @@ in
         system-desktop
       ];
       home.username = "${username}";
-
-      programs.git = {
-        enable = true;
-        settings.user = {
-          name = "Norbert Batiuk";
-          email = "norbert@batiuk.se";
-        };
-      };
     };
 
-  flake.modules.hjem."${username}" = {
-    imports = with inputs.self.modules.hjem; [
-      system-desktop
-    ];
-  };
+  flake.modules.hjem."${username}" =
+    { pkgs, ... }:
+    {
+      imports = with inputs.self.modules.hjem; [
+        system-desktop
+      ];
+
+      packages = [
+        (inputs.self.lib.mkGit pkgs {
+          settings.user = {
+            name = "Norbert Batiuk";
+            email = "norbert@batiuk.se";
+          };
+        })
+      ];
+    };
 }
