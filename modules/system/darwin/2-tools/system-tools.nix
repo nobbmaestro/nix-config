@@ -16,11 +16,14 @@
     {
       imports = with inputs.self.modules.hjem; [
         system-shell
+
+        tmux
       ];
 
       packages =
         (with inputs.self.packages.${pkgs.system}; [
           neovim
+          tmux
           yazi
         ])
         ++ (with pkgs; [
@@ -58,7 +61,6 @@
       git
       lazydocker
       lazygit
-      tmux
     ];
   };
 }
