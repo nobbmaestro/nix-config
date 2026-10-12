@@ -28,18 +28,24 @@
     ];
   };
 
-  flake.modules.homeManager.system-desktop =
+  flake.modules.hjem.system-desktop =
     { pkgs, ... }:
     {
-      imports = with inputs.self.modules.homeManager; [
+      imports = with inputs.self.modules.hjem; [
         system-tools
-
-        aerospace
-        kitty
       ];
 
-      home.packages = with pkgs; [
+      packages = with pkgs; [
         segger-jlink
       ];
     };
+
+  flake.modules.homeManager.system-desktop = {
+    imports = with inputs.self.modules.homeManager; [
+      system-tools
+
+      aerospace
+      kitty
+    ];
+  };
 }

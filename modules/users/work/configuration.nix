@@ -15,6 +15,12 @@ in
         imports = [ inputs.self.modules.homeManager."${username}" ];
       };
 
+      hjem.users."${username}" = {
+        user = "${username}";
+        directory = "/Users/${username}";
+        imports = [ inputs.self.modules.hjem."${username}" ];
+      };
+
       nix.settings.allowed-impure-host-deps = [
         "/System/Library"
         "/bin/sh"
@@ -42,11 +48,6 @@ in
       ];
       home.username = "${username}";
 
-      home.packages = with pkgs; [
-        keepassxc
-        firefox
-      ];
-
       programs.git = {
         enable = true;
 
@@ -61,5 +62,17 @@ in
           };
         };
       };
+    };
+  flake.modules.hjem."${username}" =
+    { pkgs, ... }:
+    {
+      imports = with inputs.self.modules.hjem; [
+        system-desktop
+      ];
+
+      packages = with pkgs; [
+        keepassxc
+        firefox
+      ];
     };
 }

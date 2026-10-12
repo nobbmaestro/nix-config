@@ -11,23 +11,10 @@
     ];
   };
 
-  flake.modules.homeManager.system-tools =
+  flake.modules.hjem.system-tools =
     { pkgs, ... }:
     {
-      imports = with inputs.self.modules.homeManager; [
-        system-shell
-
-        claude-code
-        direnv
-        fzf
-        git
-        lazydocker
-        lazygit
-        tmux
-        yazi
-      ];
-
-      home.packages =
+      packages =
         (with inputs.self.packages.${pkgs.system}; [
           neovim
         ])
@@ -56,4 +43,19 @@
           zoxide
         ]);
     };
+
+  flake.modules.homeManager.system-tools = {
+    imports = with inputs.self.modules.homeManager; [
+      system-shell
+
+      claude-code
+      direnv
+      fzf
+      git
+      lazydocker
+      lazygit
+      tmux
+      yazi
+    ];
+  };
 }

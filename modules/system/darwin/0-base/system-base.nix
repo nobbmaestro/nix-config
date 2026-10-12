@@ -10,6 +10,7 @@
     }:
     {
       imports = with inputs.self.modules.darwin; [
+        hjem
         home-manager
         homebrew
       ];

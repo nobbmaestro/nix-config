@@ -15,6 +15,12 @@ in
         imports = [ inputs.self.modules.homeManager."${username}" ];
       };
 
+      hjem.users."${username}" = {
+        user = "${username}";
+        directory = "/Users/${username}";
+        imports = [ inputs.self.modules.hjem."${username}" ];
+      };
+
       users.users."${username}" = {
         name = "${username}";
         shell = pkgs.zsh;
@@ -40,4 +46,9 @@ in
         };
       };
     };
+  flake.modules.hjem."${username}" = {
+    imports = with inputs.self.modules.hjem; [
+      system-desktop
+    ];
+  };
 }

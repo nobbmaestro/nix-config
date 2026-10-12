@@ -127,6 +127,26 @@
         "type": "github"
       }
     },
+    "hjem": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791289048,
+        "narHash": "sha256-JdmZVrzGDRRcOAwsYujnE7f/d1YZ9Xtk4z/1MWmQXxM=",
+        "owner": "feel-co",
+        "repo": "hjem",
+        "rev": "2b155694ce412300f240de06735c93779f9e19a4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "feel-co",
+        "repo": "hjem",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -370,6 +390,7 @@
         "claude-code": "claude-code",
         "flake-parts": "flake-parts",
         "git-hooks-nix": "git-hooks-nix",
+        "hjem": "hjem",
         "home-manager": "home-manager",
         "import-tree": "import-tree",
         "lazyhis": "lazyhis",
