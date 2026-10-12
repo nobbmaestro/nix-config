@@ -7,7 +7,6 @@
     imports = with inputs.self.modules.darwin; [
       system-base
 
-      lazyhis
       zsh
     ];
   };
@@ -16,6 +15,7 @@
     { pkgs, ... }:
     {
       packages = with inputs.self.packages.${pkgs.system}; [
+        lazyhis
         starship
       ];
     };

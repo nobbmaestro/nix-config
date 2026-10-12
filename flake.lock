@@ -192,11 +192,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1782335791,
-        "narHash": "sha256-LkCWnsaLxmWkB0F0Mln/jTjbAiJiZrER704/9XmnpIk=",
+        "lastModified": 1791840876,
+        "narHash": "sha256-Qb9AFL42NrjaPWad6fzg/nK29yMF7EpvW4W68hNhnV0=",
         "owner": "nobbmaestro",
         "repo": "lazyhis",
-        "rev": "26a785a32ec0d6047daac817fd348f8426346ab2",
+        "rev": "8ec55b275d2b3346cfac696c15a46f90da85b909",
         "type": "github"
       },
       "original": {
