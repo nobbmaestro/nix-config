@@ -46,6 +46,7 @@ in
         };
       };
     };
+
   flake.modules.hjem."${username}" = {
     imports = with inputs.self.modules.hjem; [
       system-desktop

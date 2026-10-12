@@ -33,18 +33,23 @@
     {
       imports = with inputs.self.modules.hjem; [
         system-tools
+
+        aerospace
       ];
 
-      packages = with pkgs; [
-        segger-jlink
-      ];
+      packages =
+        (with inputs.self.packages.${pkgs.system}; [
+          aerospace
+        ])
+        ++ (with pkgs; [
+          segger-jlink
+        ]);
     };
 
   flake.modules.homeManager.system-desktop = {
     imports = with inputs.self.modules.homeManager; [
       system-tools
 
-      aerospace
       kitty
     ];
   };
