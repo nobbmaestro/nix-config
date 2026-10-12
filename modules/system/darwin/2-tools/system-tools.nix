@@ -15,12 +15,14 @@
       imports = with inputs.self.modules.hjem; [
         system-shell
 
+        direnv
         tmux
       ];
 
       packages =
         (with inputs.self.packages.${pkgs.system}; [
           claude-code
+          direnv
           lazydocker
           lazygit
           neovim
