@@ -35,11 +35,13 @@
         system-tools
 
         aerospace
+        kitty
       ];
 
       packages =
         (with inputs.self.packages.${pkgs.system}; [
           aerospace
+          kitty
         ])
         ++ (with pkgs; [
           segger-jlink
@@ -49,8 +51,6 @@
   flake.modules.homeManager.system-desktop = {
     imports = with inputs.self.modules.homeManager; [
       system-tools
-
-      kitty
     ];
   };
 }

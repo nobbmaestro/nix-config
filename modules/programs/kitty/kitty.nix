@@ -1,50 +1,65 @@
 {
+  self,
+  inputs,
   ...
 }:
 {
-  flake.modules.homeManager.kitty =
-    { ... }:
+  perSystem =
+    { pkgs, ... }:
     {
-      programs.kitty = {
-        enable = true;
+      packages.kitty = inputs.wrapper-modules.lib.evalPackage [
+        self.modules.kitty.main
+        { inherit pkgs; }
+      ];
+    };
 
-        settings = {
-          term = "xterm-256color";
+  flake.modules.kitty.main =
+    { wlib, ... }:
+    {
+      imports = [ wlib.wrapperModules.kitty ];
 
-          font_family = "JetBrainsMono Nerd Font Mono";
-          bold_font = "JetBrainsMono Nerd Font Mono Bold";
-          italic_font = "JetBrainsMono Nerd Font Mono Medium Italic";
-          bold_italic_font = "JetBrainsMono Nerd Font Mono Bold Italic";
-          font_size = 13.0;
-          modify_font = "cell_height 3px";
-          disable_ligatures = "never";
+      settings = {
+        term = "xterm-256color";
 
-          background_opacity = "0.75";
-          background_blur = 32;
-          dynamic_background_opacity = true;
+        font_family = "JetBrainsMono Nerd Font Mono";
+        bold_font = "JetBrainsMono Nerd Font Mono Bold";
+        italic_font = "JetBrainsMono Nerd Font Mono Medium Italic";
+        bold_italic_font = "JetBrainsMono Nerd Font Mono Bold Italic";
+        font_size = 13.0;
+        modify_font = "cell_height 3px";
+        disable_ligatures = "never";
 
-          confirm_os_window_close = 0;
+        background_opacity = "0.75";
+        background_blur = 32;
+        dynamic_background_opacity = true;
 
-          window_border_width = "1.00";
-          window_padding_width = "5.00";
-          window_margin_width = "5.00";
-          hide_window_decorations = "titlebar-only";
-          macos_show_window_title_in = "window";
+        confirm_os_window_close = 0;
 
-          remember_window_size = true;
-          initial_window_width = 640;
-          initial_window_height = 400;
+        window_border_width = "1.00";
+        window_padding_width = "5.00";
+        window_margin_width = "5.00";
+        hide_window_decorations = "titlebar-only";
+        macos_show_window_title_in = "window";
 
-          mouse_hide_wait = "1.00";
-          copy_on_select = true;
-          cursor_shape = "block";
-          cursor_blink_interval = "0.50";
-          shell_integration = "no-cursor";
+        remember_window_size = true;
+        initial_window_width = 640;
+        initial_window_height = 400;
 
-          enable_audio_bell = false;
-        };
+        mouse_hide_wait = "1.00";
+        copy_on_select = true;
+        cursor_shape = "block";
+        cursor_blink_interval = "0.50";
+        shell_integration = "no-cursor";
 
-        extraConfig = builtins.readFile ./etc/themes/andromeda.conf;
+        enable_audio_bell = false;
       };
+
+      extraConfig = builtins.readFile ./etc/themes/andromeda.conf;
+    };
+
+  flake.modules.hjem.kitty =
+    { pkgs, ... }:
+    {
+      xdg.config.files."kitty/kitty.conf".source = "${self.packages.${pkgs.system}.kitty}/kitty.conf";
     };
 }
