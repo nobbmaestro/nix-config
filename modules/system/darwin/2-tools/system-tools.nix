@@ -6,8 +6,6 @@
   flake.modules.darwin.system-tools = {
     imports = with inputs.self.modules.darwin; [
       system-shell
-
-      claude-code
     ];
   };
 
@@ -22,6 +20,7 @@
 
       packages =
         (with inputs.self.packages.${pkgs.system}; [
+          claude-code
           lazydocker
           lazygit
           neovim
@@ -57,7 +56,6 @@
     imports = with inputs.self.modules.homeManager; [
       system-shell
 
-      claude-code
       direnv
       fzf
       lazydocker
