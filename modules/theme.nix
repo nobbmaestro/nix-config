@@ -64,7 +64,5 @@ in
     default = { };
   };
 
-  config.flake.theme = theme // {
-    withoutHash = lib.mapAttrs (_: lib.removePrefix "#") (semantic // base16 // palette // ansi);
-  };
+  config.flake.theme = theme;
 }
