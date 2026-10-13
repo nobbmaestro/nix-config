@@ -97,7 +97,6 @@
         plenary-nvim
         harpoon
         neo-tree-nvim
-        vim-tmux-navigator
         nvim-web-devicons
         nui-nvim
 
