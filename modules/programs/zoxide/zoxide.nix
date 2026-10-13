@@ -1,19 +1,9 @@
 {
   self,
-  inputs,
   ...
 }:
 {
-  perSystem =
-    { pkgs, ... }:
-    {
-      packages.zoxide = inputs.wrapper-modules.lib.evalPackage [
-        self.modules.zoxide.main
-        { inherit pkgs; }
-      ];
-    };
-
-  flake.modules.zoxide.main =
+  flake.wrappers.zoxide =
     {
       wlib,
       pkgs,
@@ -26,7 +16,7 @@
       package = lib.mkDefault pkgs.zoxide;
     };
 
-  flake.modules.zsh.zoxide =
+  flake.wrappers.zsh =
     { pkgs, ... }:
     let
       zoxide = self.packages.${pkgs.system}.zoxide;

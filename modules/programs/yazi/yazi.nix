@@ -1,19 +1,5 @@
 {
-  self,
-  inputs,
-  ...
-}:
-{
-  perSystem =
-    { pkgs, ... }:
-    {
-      packages.yazi = inputs.wrapper-modules.lib.evalPackage [
-        self.modules.yazi.main
-        { inherit pkgs; }
-      ];
-    };
-
-  flake.modules.yazi.main =
+  flake.wrappers.yazi =
     { wlib, ... }:
     {
       imports = [ wlib.wrapperModules.yazi ];

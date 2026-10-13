@@ -1,19 +1,9 @@
 {
-  self,
   inputs,
   ...
 }:
 {
-  perSystem =
-    { pkgs, ... }:
-    {
-      packages.claude-code = inputs.wrapper-modules.lib.evalPackage [
-        self.modules.claude-code.main
-        { inherit pkgs; }
-      ];
-    };
-
-  flake.modules.claude-code.main =
+  flake.wrappers.claude-code =
     {
       wlib,
       pkgs,

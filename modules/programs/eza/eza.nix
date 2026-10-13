@@ -1,19 +1,5 @@
 {
-  self,
-  inputs,
-  ...
-}:
-{
-  perSystem =
-    { pkgs, ... }:
-    {
-      packages.eza = inputs.wrapper-modules.lib.evalPackage [
-        self.modules.eza.main
-        { inherit pkgs; }
-      ];
-    };
-
-  flake.modules.eza.main =
+  flake.wrappers.eza =
     {
       wlib,
       pkgs,
@@ -41,7 +27,7 @@
       env.EZA_COLORS = "di=37;1:fi=37:ex=31:ln=35;1";
     };
 
-  flake.modules.zsh.eza = {
+  flake.wrappers.zsh = {
     zshAliases = {
       la = "ls -al";
       ll = "ls -l";

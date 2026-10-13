@@ -4,16 +4,7 @@
   ...
 }:
 {
-  perSystem =
-    { pkgs, ... }:
-    {
-      packages.lazyhis = inputs.wrapper-modules.lib.evalPackage [
-        self.modules.lazyhis.main
-        { inherit pkgs; }
-      ];
-    };
-
-  flake.modules.lazyhis.main =
+  flake.wrappers.lazyhis =
     {
       wlib,
       pkgs,
@@ -87,7 +78,7 @@
       };
     };
 
-  flake.modules.zsh.lazyhis =
+  flake.wrappers.zsh =
     {
       pkgs,
       lib,

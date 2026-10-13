@@ -1,19 +1,9 @@
 {
   self,
-  inputs,
   ...
 }:
 {
-  perSystem =
-    { pkgs, ... }:
-    {
-      packages.kitty = inputs.wrapper-modules.lib.evalPackage [
-        self.modules.kitty.main
-        { inherit pkgs; }
-      ];
-    };
-
-  flake.modules.kitty.main =
+  flake.wrappers.kitty =
     { wlib, ... }:
     {
       imports = [ wlib.wrapperModules.kitty ];

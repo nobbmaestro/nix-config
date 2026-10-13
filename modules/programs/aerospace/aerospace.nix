@@ -1,19 +1,5 @@
 {
-  self,
-  inputs,
-  ...
-}:
-{
-  perSystem =
-    { pkgs, ... }:
-    {
-      packages.aerospace = inputs.wrapper-modules.lib.evalPackage [
-        self.modules.aerospace.main
-        { inherit pkgs; }
-      ];
-    };
-
-  flake.modules.aerospace.main =
+  flake.wrappers.aerospace =
     {
       wlib,
       pkgs,

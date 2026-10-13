@@ -1,27 +1,16 @@
 {
   self,
-  inputs,
   ...
 }:
-let
-  mkGit =
+{
+  flake.lib.mkGit =
     pkgs: identity:
-    inputs.wrapper-modules.lib.evalPackage [
-      self.modules.git.main
+    self.wrappers.git.wrap [
       identity
       { inherit pkgs; }
     ];
-in
-{
-  flake.lib = { inherit mkGit; };
 
-  perSystem =
-    { pkgs, ... }:
-    {
-      packages.git = mkGit pkgs { };
-    };
-
-  flake.modules.git.main =
+  flake.wrappers.git =
     {
       wlib,
       pkgs,

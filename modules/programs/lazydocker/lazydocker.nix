@@ -1,19 +1,5 @@
 {
-  self,
-  inputs,
-  ...
-}:
-{
-  perSystem =
-    { pkgs, ... }:
-    {
-      packages.lazydocker = inputs.wrapper-modules.lib.evalPackage [
-        self.modules.lazydocker.main
-        { inherit pkgs; }
-      ];
-    };
-
-  flake.modules.lazydocker.main =
+  flake.wrappers.lazydocker =
     {
       wlib,
       pkgs,
@@ -65,7 +51,7 @@
       env.CONFIG_DIR = "${configDir}";
     };
 
-  flake.modules.zsh.lazydocker = {
+  flake.wrappers.zsh = {
     zshAliases = {
       lzd = "lazydocker";
     };

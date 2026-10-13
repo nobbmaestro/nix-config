@@ -1,19 +1,5 @@
 {
-  self,
-  inputs,
-  ...
-}:
-{
-  perSystem =
-    { pkgs, ... }:
-    {
-      packages.lazygit = inputs.wrapper-modules.lib.evalPackage [
-        self.modules.lazygit.main
-        { inherit pkgs; }
-      ];
-    };
-
-  flake.modules.lazygit.main =
+  flake.wrappers.lazygit =
     {
       wlib,
       pkgs,
@@ -72,7 +58,7 @@
       flags."--use-config-file" = yaml.generate "lazygit-config.yml" settings;
     };
 
-  flake.modules.zsh.lazygit = {
+  flake.wrappers.zsh = {
     zshAliases = {
       lzg = "lazygit";
     };

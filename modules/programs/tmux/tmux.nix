@@ -1,19 +1,9 @@
 {
-  self,
   inputs,
   ...
 }:
 {
-  perSystem =
-    { pkgs, ... }:
-    {
-      packages.tmux = inputs.wrapper-modules.lib.evalPackage [
-        self.modules.tmux.main
-        { inherit pkgs; }
-      ];
-    };
-
-  flake.modules.tmux.main =
+  flake.wrappers.tmux =
     {
       wlib,
       pkgs,

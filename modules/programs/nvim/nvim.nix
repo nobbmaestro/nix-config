@@ -1,18 +1,13 @@
 {
   self,
-  inputs,
   ...
 }:
 {
   perSystem =
     { pkgs, ... }:
     let
-      nvim-base = inputs.wrapper-modules.lib.evalPackage [
-        self.modules.neovim.main
-        { inherit pkgs; }
-      ];
-    in
-    let
+      nvim-base = self.wrappers.neovim.wrap { inherit pkgs; };
+
       mkWrapper =
         name:
         pkgs.writeShellApplication {
@@ -34,6 +29,8 @@
         };
     in
     {
+      wrappers.packages.neovim = true;
+
       packages.neovim = pkgs.symlinkJoin {
         name = "neovim-${pkgs.neovim-unwrapped.version}";
         paths = [
@@ -44,7 +41,7 @@
       };
     };
 
-  flake.modules.neovim.main =
+  flake.wrappers.neovim =
     {
       wlib,
       pkgs,

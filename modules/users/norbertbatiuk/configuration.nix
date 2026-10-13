@@ -12,7 +12,6 @@ in
       imports = with inputs.self.modules.darwin; [ ];
 
       hjem.users."${username}" = {
-        user = "${username}";
         directory = "/Users/${username}";
         imports = [ inputs.self.modules.hjem."${username}" ];
       };
@@ -22,8 +21,6 @@ in
         shell = pkgs.zsh;
         uid = 501;
       };
-
-      programs.zsh.enable = true;
     };
 
   flake.modules.hjem."${username}" =

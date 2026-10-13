@@ -1,19 +1,9 @@
 {
   self,
-  inputs,
   ...
 }:
 {
-  perSystem =
-    { pkgs, ... }:
-    {
-      packages.direnv = inputs.wrapper-modules.lib.evalPackage [
-        self.modules.direnv.main
-        { inherit pkgs; }
-      ];
-    };
-
-  flake.modules.direnv.main =
+  flake.wrappers.direnv =
     {
       wlib,
       pkgs,
@@ -41,7 +31,7 @@
       };
     };
 
-  flake.modules.zsh.direnv =
+  flake.wrappers.zsh =
     { pkgs, ... }:
     let
       direnv = self.packages.${pkgs.system}.direnv;

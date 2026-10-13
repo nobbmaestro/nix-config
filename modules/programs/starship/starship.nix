@@ -1,19 +1,9 @@
 {
   self,
-  inputs,
   ...
 }:
 {
-  perSystem =
-    { pkgs, ... }:
-    {
-      packages.starship = inputs.wrapper-modules.lib.evalPackage [
-        self.modules.starship.main
-        { inherit pkgs; }
-      ];
-    };
-
-  flake.modules.starship.main =
+  flake.wrappers.starship =
     { wlib, ... }:
     {
       imports = [ wlib.wrapperModules.starship ];
@@ -151,10 +141,10 @@
       };
     };
 
-  flake.modules.zsh.starship =
+  flake.wrappers.zsh =
     { pkgs, ... }:
     let
-      starship = inputs.self.packages.${pkgs.system}.starship;
+      starship = self.packages.${pkgs.system}.starship;
     in
     {
       zshrc.content = ''

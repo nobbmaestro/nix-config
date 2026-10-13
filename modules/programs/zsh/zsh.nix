@@ -1,20 +1,9 @@
 {
   self,
-  inputs,
   ...
 }:
 {
-  perSystem =
-    { pkgs, ... }:
-    {
-      packages.zsh = inputs.wrapper-modules.lib.evalPackage (
-        [ self.modules.zsh.main ]
-        ++ builtins.attrValues (builtins.removeAttrs self.modules.zsh [ "main" ])
-        ++ [ { inherit pkgs; } ]
-      );
-    };
-
-  flake.modules.zsh.main =
+  flake.wrappers.zsh =
     {
       wlib,
       pkgs,

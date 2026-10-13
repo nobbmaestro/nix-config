@@ -1,19 +1,9 @@
 {
   self,
-  inputs,
   ...
 }:
 {
-  perSystem =
-    { pkgs, ... }:
-    {
-      packages.fzf = inputs.wrapper-modules.lib.evalPackage [
-        self.modules.fzf.main
-        { inherit pkgs; }
-      ];
-    };
-
-  flake.modules.fzf.main =
+  flake.wrappers.fzf =
     {
       wlib,
       pkgs,
@@ -26,7 +16,7 @@
       package = lib.mkDefault pkgs.fzf;
     };
 
-  flake.modules.zsh.fzf =
+  flake.wrappers.zsh =
     { pkgs, ... }:
     let
       fzf = self.packages.${pkgs.system}.fzf;
