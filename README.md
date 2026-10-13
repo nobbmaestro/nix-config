@@ -22,7 +22,7 @@ Layered under `modules/system/darwin/`:
 - **`2-tools`** — system-level CLI tools
 - **`3-desktop`** — desktop settings, fonts, keyboard, security, and macOS defaults
 
-### Programs (home-manager)
+### Programs (wrapped)
 
 Per-program modules under `modules/programs/`:
 
@@ -31,6 +31,11 @@ Per-program modules under `modules/programs/`:
 - **Git workflow**: Git, LazyGit, LazyDocker
 - **Window management**: AeroSpace (i3-like tiling WM for macOS)
 - **Dev ergonomics**: direnv, [lazyhis](https://github.com/nobbmaestro/lazyhis)
+
+Each program is a single derivation with its configuration baked in, built with
+[wrapper-modules](https://github.com/BirdeeHub/nix-wrapper-modules). Declaring
+`flake.wrappers.<name>` exposes `packages.<name>` for every system, so a program
+module contains configuration only.
 
 ### Package management
 
@@ -42,10 +47,10 @@ Per-program modules under `modules/programs/`:
 ```
 flake.nix                     # minimal entry point — imports ./modules via import-tree
 modules/
-├── nix/                      # flake-parts setup, home-manager & nix-homebrew integration
+├── nix/                      # flake-parts setup (lib, wrappers), hjem, homebrew, treefmt
 ├── system/darwin/            # nix-darwin system layers (0-base … 3-desktop)
-├── programs/                 # per-program home-manager modules
-├── users/                    # per-user home-manager configs (norbertbatiuk, work)
+├── programs/                 # per-program wrapper modules
+├── users/                    # per-user hjem configs (norbertbatiuk, work)
 └── hosts/                    # per-host darwin configs
     └── macbook-pro-m1/
         ├── configuration.nix # host-level config
@@ -58,10 +63,10 @@ With the dendritic pattern, every `.nix` file under `modules/` is auto-imported 
 
 ### 1. Install nix
 
-Install nix from the official installer:
+Install nix with the [Determinate Systems installer](https://install.determinate.systems):
 
 ```sh
-sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install)
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
 ```
 
 or, simply run:
@@ -112,13 +117,12 @@ make uninstall # remove nix-darwin
 ## Adding a host or user
 
 - **New host**: create `modules/hosts/<hostname>/configuration.nix` following the pattern in `macbook-pro-m1`, then add `modules/hosts/<hostname>/users/<user>.nix` binding files for each user on that host.
-- **New user**: create `modules/users/<user>/` with the user's home-manager config, then bind it to one or more hosts via the `users/<user>.nix` files above.
+- **New user**: create `modules/users/<user>/` with the user's hjem config, then bind it to one or more hosts via the `users/<user>.nix` files above.
 
 ## Resources
 
 - [Dendritic Nix](https://dendrix.oeiuwq.com/Dendritic.html)
 - [Dendritic Design with the Flake Parts Framework](https://github.com/Doc-Steve/dendritic-design-with-flake-parts)
-- [Set up Nix on macOS using flakes, nix-darwin and home-manager](https://noghartt.dev/blog/set-up-nix-on-macos-using-flakes-nix-darwin-and-home-manager/)
 - [Ultimate NixOS Desktop: Niri, Noctalia Shell, and the Dendritic Pattern | Full Setup](https://www.youtube.com/watch?v=aNgujRXDTdE)
 - [NixOS & Flakes Book](https://nixos-and-flakes.thiscute.world)
 
