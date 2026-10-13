@@ -151,13 +151,13 @@
       };
     };
 
-  flake.modules.homeManager.starship =
+  flake.modules.zsh.starship =
     { pkgs, ... }:
     let
       starship = inputs.self.packages.${pkgs.system}.starship;
     in
     {
-      programs.zsh.initContent = ''
+      zshrc.content = ''
         eval "$(${starship}/bin/starship init zsh)"
       '';
     };

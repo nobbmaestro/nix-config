@@ -87,24 +87,27 @@
       };
     };
 
-  flake.modules.homeManager.lazyhis = {
-    programs.zsh = {
-      history = {
-        save = 0;
-        size = 0;
-        ignoreAllDups = true;
-        ignoreSpace = true;
-      };
+  flake.modules.zsh.lazyhis =
+    {
+      pkgs,
+      lib,
+      ...
+    }:
+    let
+      lazyhis = self.packages.${pkgs.system}.lazyhis;
+    in
+    {
+      zshrc.content = lib.mkMerge [
+        (lib.mkOrder 500 ''
+          HISTSIZE=0
+          SAVEHIST=0
+          setopt HIST_IGNORE_ALL_DUPS
+          setopt HIST_IGNORE_SPACE
+        '')
 
-      initContent = ''
-        if type "lazyhis" >/dev/null 2>&1; then
-          if type "zvm_version" >/dev/null 2>&1; then
-            zvm_after_init_commands+=('eval "$(lazyhis init zsh)"')
-          else
-            eval "$(lazyhis init zsh)"
-          fi
-        fi
-      '';
+        ''
+          zvm_after_init_commands+=('eval "$(${lazyhis}/bin/lazyhis init zsh)"')
+        ''
+      ];
     };
-  };
 }

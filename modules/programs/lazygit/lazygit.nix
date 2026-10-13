@@ -72,8 +72,8 @@
       flags."--use-config-file" = yaml.generate "lazygit-config.yml" settings;
     };
 
-  flake.modules.homeManager.lazygit = {
-    home.shellAliases = {
+  flake.modules.zsh.lazygit = {
+    zshAliases = {
       lzg = "lazygit";
     };
   };

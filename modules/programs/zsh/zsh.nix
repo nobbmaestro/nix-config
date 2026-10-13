@@ -1,46 +1,60 @@
 {
-  flake.modules.darwin.zsh =
-    { ... }:
+  self,
+  inputs,
+  ...
+}:
+{
+  perSystem =
+    { pkgs, ... }:
     {
-      programs.zsh = {
-        enable = true;
-        enableGlobalCompInit = false;
-      };
+      packages.zsh = inputs.wrapper-modules.lib.evalPackage (
+        [ self.modules.zsh.main ]
+        ++ builtins.attrValues (builtins.removeAttrs self.modules.zsh [ "main" ])
+        ++ [ { inherit pkgs; } ]
+      );
     };
 
-  flake.modules.homeManager.zsh =
-    { pkgs, config, ... }:
+  flake.modules.zsh.main =
     {
-      programs.zsh = {
-        enable = true;
-        dotDir = config.xdg.configHome + "/zsh";
-        completionInit = "autoload -U compinit && compinit -u";
+      wlib,
+      pkgs,
+      lib,
+      ...
+    }:
+    {
+      imports = [ wlib.wrapperModules.zsh ];
 
-        shellAliases = {
-          c = "clear";
-          rm = "rm -i";
-          fman = "compgen -c | fzf --preview='man {}' | xargs man";
-        };
+      hmSessionVariables = null;
 
-        plugins = [
-          {
-            name = "vi-mode";
-            src = pkgs.zsh-vi-mode;
-            file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
-          }
-          {
-            name = "syntax-highlighting";
-            src = pkgs.zsh-syntax-highlighting;
-            file = "share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh";
-          }
-          {
-            name = "autosuggestions";
-            src = pkgs.zsh-autosuggestions;
-            file = "share/zsh-autosuggestions/zsh-autosuggestions.zsh";
-          }
-        ];
+      zshAliases = {
+        c = "clear";
+        rm = "rm -i";
+        fman = "compgen -c | fzf --preview='man {}' | xargs man";
+      };
 
-        initContent = ''
+      zshenv.content = ''
+        export XDG_CACHE_HOME="$HOME/.cache"
+        export XDG_CONFIG_HOME="$HOME/.config"
+        export XDG_DATA_HOME="$HOME/.local/share"
+        export XDG_STATE_HOME="$HOME/.local/state"
+      '';
+
+      zshrc.content = lib.mkMerge [
+        (lib.mkOrder 500 ''
+          typeset -U path cdpath fpath manpath
+
+          ZSH_COMPDUMP="''${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
+          mkdir -p "''${ZSH_COMPDUMP:h}"
+          autoload -U compinit && compinit -u -d "$ZSH_COMPDUMP"
+        '')
+
+        (lib.mkOrder 600 ''
+          source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+          source ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+          source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+        '')
+
+        ''
           path=("$HOME/.local/bin" $path)
           export PATH
           export EDITOR=nvim
@@ -76,7 +90,28 @@
               printf "\n";
             }'
           }
-        '';
+        ''
+      ];
+    };
+
+  flake.modules.hjem.zsh =
+    { pkgs, ... }:
+    let
+      zsh = self.packages.${pkgs.system}.zsh;
+    in
+    {
+      files.".zshenv".text = ''
+        export ZDOTDIR="${zsh.ZDOTDIR}"
+        source "$ZDOTDIR/.zshenv"
+      '';
+    };
+
+  flake.modules.darwin.zsh =
+    { ... }:
+    {
+      programs.zsh = {
+        enable = true;
+        enableGlobalCompInit = false;
       };
     };
 }

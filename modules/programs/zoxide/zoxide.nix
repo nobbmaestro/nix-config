@@ -1,9 +1,9 @@
 {
-  flake.modules.homeManager.zoxide = {
-    programs.zoxide = {
-      enable = true;
-      enableZshIntegration = true;
-      options = [ "--cmd cd" ];
+  flake.modules.zsh.zoxide =
+    { pkgs, ... }:
+    {
+      zshrc.content = ''
+        eval "$(${pkgs.zoxide}/bin/zoxide init zsh --cmd cd)"
+      '';
     };
-  };
 }

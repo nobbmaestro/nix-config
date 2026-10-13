@@ -1,8 +1,11 @@
 {
-  flake.modules.homeManager.fzf = {
-    programs.fzf = {
-      enable = true;
-      enableZshIntegration = true;
+  flake.modules.zsh.fzf =
+    { pkgs, ... }:
+    {
+      zshrc.content = ''
+        if [[ $options[zle] = on ]]; then
+          source <(${pkgs.fzf}/bin/fzf --zsh)
+        fi
+      '';
     };
-  };
 }

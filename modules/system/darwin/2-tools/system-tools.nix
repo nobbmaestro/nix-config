@@ -50,6 +50,8 @@
           speedtest-cli
 
           # shell
+          eza
+          fzf
           zoxide
         ]);
     };
@@ -57,11 +59,6 @@
   flake.modules.homeManager.system-tools = {
     imports = with inputs.self.modules.homeManager; [
       system-shell
-
-      direnv
-      fzf
-      lazydocker
-      lazygit
     ];
   };
 }

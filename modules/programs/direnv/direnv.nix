@@ -41,13 +41,13 @@
       };
     };
 
-  flake.modules.homeManager.direnv =
+  flake.modules.zsh.direnv =
     { pkgs, ... }:
     let
       direnv = self.packages.${pkgs.system}.direnv;
     in
     {
-      programs.zsh.initContent = ''
+      zshrc.content = ''
         eval "$(${direnv}/bin/direnv hook zsh)"
       '';
     };

@@ -65,8 +65,8 @@
       env.CONFIG_DIR = "${configDir}";
     };
 
-  flake.modules.homeManager.lazydocker = {
-    home.shellAliases = {
+  flake.modules.zsh.lazydocker = {
+    zshAliases = {
       lzd = "lazydocker";
     };
   };
