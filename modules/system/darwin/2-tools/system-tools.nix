@@ -24,6 +24,7 @@
           claude-code
           direnv
           eza
+          fzf
           lazydocker
           lazygit
           neovim
