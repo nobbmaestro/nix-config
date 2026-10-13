@@ -1,4 +1,12 @@
 {
+  self,
+  ...
+}:
+let
+  theme = self.theme;
+  inherit (theme) palette;
+in
+{
   flake.wrappers.lazydocker =
     {
       wlib,
@@ -19,21 +27,21 @@
           shortTimeFormat = "15:04";
           theme = {
             activeBorderColor = [
-              "#00e8c6"
+              theme.accent
               "bold"
             ];
-            inactiveBorderColor = [ "#464959" ];
+            inactiveBorderColor = [ theme.border ];
             searchingActiveBorderColor = [
-              "#00e8c6"
+              theme.accent
               "bold"
             ];
-            optionsTextColor = [ "#7cb7ff" ];
-            selectedLineBgColor = [ "#3a3e4b" ];
-            selectedRangeBgColor = [ "#3a3e4b" ];
-            cherryPickedCommitBgColor = [ "#00e8c6" ];
-            cherryPickedCommitFgColor = [ "#7cb7ff" ];
-            unstagedChangesColor = [ "#ee5d43" ];
-            defaultFgColor = [ "#d5ced9" ];
+            optionsTextColor = [ palette.blue ];
+            selectedLineBgColor = [ theme.selection ];
+            selectedRangeBgColor = [ theme.selection ];
+            cherryPickedCommitBgColor = [ theme.accent ];
+            cherryPickedCommitFgColor = [ palette.blue ];
+            unstagedChangesColor = [ palette.red ];
+            defaultFgColor = [ theme.fg ];
           };
         };
 

@@ -1,4 +1,5 @@
 {
+  self,
   inputs,
   ...
 }:
@@ -10,6 +11,44 @@
       ...
     }:
     let
+      inherit (self.theme) palette;
+
+      themeConfig = pkgs.writeText "bubbles.conf" ''
+        # Inspired by: https://www.reddit.com/r/neovim/comments/10fmg2e/neovim_and_his_beloved_buddy_tmux/#lightbox
+
+        # symbols
+        nerdfont_left=""
+        nerdfont_right=""
+
+        # formats
+        pane_format="#I #W"
+        prefix_format="#[fg=${palette.cyan}]$nerdfont_left#[fg=${palette.mono_0}]#[bg=${palette.cyan}]"󰘶"#[bg=default]#[fg=${palette.cyan}]$nerdfont_right"
+        zoomed_format="#[fg=${palette.cyan}]$nerdfont_left#[fg=${palette.mono_0}]#[bg=${palette.cyan}]"Z"#[bg=default]#[fg=${palette.cyan}]$nerdfont_right"
+
+        # components
+        prefix_component="#{?client_prefix,$prefix_format,}"
+        zoomed_component="#{?window_zoomed_flag,$zoomed_format,}"
+        session_component="#[fg=${palette.mono_5}]$nerdfont_left#[fg=${palette.mono_0}]#[bg=${palette.mono_5}]#S#[bg=default]#[fg=${palette.mono_5}]$nerdfont_right"
+
+        # options
+        set-option -g status-style bg=default
+        set-option -g message-style bg=default,fg=${palette.blue}
+        set-option -g pane-border-style fg=${palette.mono_1}
+        set-option -g pane-active-border-style fg=${palette.mono_5}
+        set-option -g mode-style bg=${palette.mono_3}
+
+        # popup window
+        set -g popup-border-lines rounded
+        set -g popup-border-style fg=${palette.mono_3}
+
+        # status bar settings
+        set -g status-left "$session_component "
+        set -g status-right "$prefix_component $zoomed_component"
+        set -g window-status-format "#[fg=${palette.mono_1}]$nerdfont_left#[fg=${palette.mono_5}]#[bg=${palette.mono_1}]$pane_format#[bg=default]#[fg=${palette.mono_1}]$nerdfont_right"
+        set -g window-status-current-format "#[fg=${palette.mono_3}]$nerdfont_left#[fg=${palette.mono_5},bold]#[bg=${palette.mono_3}]$pane_format#[bg=default]#[fg=${palette.mono_3}]$nerdfont_right"
+        set -g status-justify absolute-centre
+      '';
+
       tmuxTether = inputs.tmux-tether.packages.${pkgs.system}.default;
     in
     {
@@ -101,8 +140,7 @@
         bind -r C-l run "tmux select-pane -R"
 
         # Theme
-        source-file ${./etc/themes/colors/andromeda.conf}
-        source-file ${./etc/themes/bubbles.conf}
+        source-file ${themeConfig}
       '';
     };
 

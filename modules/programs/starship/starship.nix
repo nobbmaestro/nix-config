@@ -2,6 +2,9 @@
   self,
   ...
 }:
+let
+  inherit (self.theme) palette;
+in
 {
   flake.wrappers.starship =
     { wlib, ... }:
@@ -102,7 +105,7 @@
 
         docker_context = {
           symbol = " ";
-          style = "fg:#06969A";
+          style = "fg:cyan";
           format = "[$symbol]($style) $path";
           detect_files = [
             "docker-compose.yml"
@@ -126,17 +129,19 @@
         };
 
         palettes.andromeda = {
-          blue = "#7cb7ff";
-          red = "#ee5f43";
-          green = "#96e072";
-          purple = "#c74ded";
-          cyan = "#00e8c6";
-          orange = "#f39c12";
-          yellow = "#ffe66d";
-          gray = "#606064";
-          white = "#d5ced9";
-          pink = "#ff00aa";
-          hot_pink = "#f92672";
+          inherit (palette)
+            blue
+            red
+            green
+            purple
+            cyan
+            orange
+            yellow
+            gray
+            pink
+            hot_pink
+            ;
+          white = palette.mono_5;
         };
       };
     };
