@@ -30,6 +30,7 @@
           neovim
           tmux
           yazi
+          zoxide
         ])
         ++ (with pkgs; [
           curl
