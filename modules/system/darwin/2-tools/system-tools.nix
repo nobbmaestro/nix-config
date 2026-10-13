@@ -23,6 +23,7 @@
         (with inputs.self.packages.${pkgs.system}; [
           claude-code
           direnv
+          eza
           lazydocker
           lazygit
           neovim
@@ -50,7 +51,6 @@
           speedtest-cli
 
           # shell
-          eza
           fzf
           zoxide
         ]);
