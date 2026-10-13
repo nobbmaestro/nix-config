@@ -11,7 +11,6 @@
     {
       imports = with inputs.self.modules.darwin; [
         hjem
-        home-manager
         homebrew
       ];
 
@@ -28,24 +27,5 @@
         darwin-version
         darwin-uninstaller
       ];
-    };
-
-  flake.modules.homeManager.system-base =
-    {
-      config,
-      pkgs,
-      lib,
-      ...
-    }:
-    {
-      xdg.enable = true;
-
-      home.homeDirectory =
-        if pkgs.stdenv.isDarwin then
-          (lib.mkForce "/Users/${config.home.username}")
-        else
-          "/home/${config.home.username}";
-
-      home.stateVersion = "23.05";
     };
 }
