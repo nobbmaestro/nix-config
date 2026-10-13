@@ -81,7 +81,9 @@
 
       configAfter = ''
         # macOS: reattach so GUI apps spawned from tmux can register with LaunchServices
-        set-option -g default-command "${pkgs.reattach-to-user-namespace}/bin/reattach-to-user-namespace -l ${pkgs.zsh}/bin/zsh"
+        set-option -g default-command "${pkgs.reattach-to-user-namespace}/bin/reattach-to-user-namespace -l ${
+          self.packages.${pkgs.system}.zsh
+        }/bin/zsh"
 
         # Options
         set-option -g history-file ~/.tmux_history
