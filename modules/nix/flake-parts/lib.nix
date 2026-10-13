@@ -4,7 +4,7 @@
   ...
 }:
 {
-  # Helper functions for creating system / home-manager configurations
+  # Helper functions for creating system configurations
 
   options.flake.lib = lib.mkOption {
     type = lib.types.attrsOf lib.types.unspecified;
@@ -27,16 +27,6 @@
         modules = [
           inputs.self.modules.darwin.${name}
           { nixpkgs.hostPlatform = lib.mkDefault system; }
-        ];
-      };
-    };
-
-    mkHomeManager = system: name: {
-      ${name} = inputs.home-manager.lib.homeManagerConfiguration {
-        pkgs = inputs.nixpkgs.legacyPackages.${system};
-        modules = [
-          inputs.self.modules.homeManager.${name}
-          { nixpkgs.config.allowUnfree = true; }
         ];
       };
     };

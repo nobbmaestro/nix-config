@@ -1,31 +1,48 @@
 {
-  flake.modules.homeManager.git = {
-    programs.git = {
-      enable = true;
+  self,
+  ...
+}:
+{
+  flake.lib.mkGit =
+    pkgs: identity:
+    self.wrappers.git.wrap [
+      identity
+      { inherit pkgs; }
+    ];
 
-      signing = {
-        format = "ssh";
-        key = "~/.ssh/id_ed25519.pub";
-      };
+  flake.wrappers.git =
+    {
+      wlib,
+      pkgs,
+      ...
+    }:
+    let
+      ignoreFile = pkgs.writeText "gitignore" ''
+        .DS_Store
+        .cache/
+        .direnv/
+        .envrc
+        .exrc
+        .gitlab-ci-local
+        .luarc.json
+        .nvmrc
+        .python-version
+        .rsyncrc
+        __pycache__
+        compile_commands.json
+      '';
+    in
+    {
+      imports = [ wlib.wrapperModules.git ];
 
       settings = {
         pull.rebase = true;
-      };
 
-      ignores = [
-        ".DS_Store"
-        ".cache/"
-        ".direnv/"
-        ".envrc"
-        ".exrc"
-        ".gitlab-ci-local"
-        ".luarc.json"
-        ".nvmrc"
-        ".python-version"
-        ".rsyncrc"
-        "__pycache__"
-        "compile_commands.json"
-      ];
+        core.excludesFile = "${ignoreFile}";
+
+        user.signingKey = "~/.ssh/id_ed25519.pub";
+        gpg.format = "ssh";
+        "gpg \"ssh\"".program = "${pkgs.openssh}/bin/ssh-keygen";
+      };
     };
-  };
 }

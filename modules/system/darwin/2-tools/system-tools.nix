@@ -6,30 +6,31 @@
   flake.modules.darwin.system-tools = {
     imports = with inputs.self.modules.darwin; [
       system-shell
-
-      claude-code
     ];
   };
 
-  flake.modules.homeManager.system-tools =
+  flake.modules.hjem.system-tools =
     { pkgs, ... }:
     {
-      imports = with inputs.self.modules.homeManager; [
+      imports = with inputs.self.modules.hjem; [
         system-shell
 
-        claude-code
         direnv
-        fzf
-        git
-        lazydocker
-        lazygit
         tmux
-        yazi
       ];
 
-      home.packages =
+      packages =
         (with inputs.self.packages.${pkgs.system}; [
+          claude-code
+          direnv
+          eza
+          fzf
+          lazydocker
+          lazygit
           neovim
+          tmux
+          yazi
+          zoxide
         ])
         ++ (with pkgs; [
           curl
@@ -50,10 +51,6 @@
           picocom
           python3
           speedtest-cli
-
-          # shell
-          starship
-          zoxide
         ]);
     };
 }

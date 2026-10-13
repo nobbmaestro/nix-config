@@ -1,16 +1,13 @@
 {
-  flake.modules.homeManager.yazi = {
-    programs.yazi = {
-      enable = true;
+  flake.wrappers.yazi =
+    { wlib, ... }:
+    {
+      imports = [ wlib.wrapperModules.yazi ];
 
-      shellWrapperName = "y";
-    };
-
-    home.file = {
-      ".config/yazi" = {
-        source = ./etc;
-        recursive = true;
+      settings = {
+        yazi = builtins.fromTOML (builtins.readFile ./etc/yazi.toml);
+        keymap = builtins.fromTOML (builtins.readFile ./etc/keymap.toml);
+        theme = builtins.fromTOML (builtins.readFile ./etc/theme.toml);
       };
     };
-  };
 }

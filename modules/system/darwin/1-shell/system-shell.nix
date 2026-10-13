@@ -7,20 +7,21 @@
     imports = with inputs.self.modules.darwin; [
       system-base
 
-      lazyhis
       zsh
     ];
   };
 
-  flake.modules.homeManager.system-shell = {
-    imports = with inputs.self.modules.homeManager; [
-      system-base
+  flake.modules.hjem.system-shell =
+    { pkgs, ... }:
+    {
+      imports = with inputs.self.modules.hjem; [
+        zsh
+      ];
 
-      eza
-      lazyhis
-      starship
-      zoxide
-      zsh
-    ];
-  };
+      packages = with inputs.self.packages.${pkgs.system}; [
+        lazyhis
+        starship
+        zsh
+      ];
+    };
 }

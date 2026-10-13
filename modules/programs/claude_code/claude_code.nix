@@ -3,21 +3,15 @@
   ...
 }:
 {
-  perSystem =
-    { system, ... }:
+  flake.wrappers.claude-code =
     {
-      packages.claude-code = inputs.claude-code.packages.${system}.claude-code;
-    };
-
-  flake.modules.darwin.claude-code = {
-    nixpkgs.overlays = [
-      inputs.claude-code.overlays.default
-    ];
-  };
-
-  flake.modules.homeManager.claude-code =
-    { pkgs, ... }:
+      wlib,
+      pkgs,
+      ...
+    }:
     {
-      home.packages = [ pkgs.claude-code ];
+      imports = [ wlib.wrapperModules.claude-code ];
+
+      package = inputs.claude-code.packages.${pkgs.system}.claude-code;
     };
 }

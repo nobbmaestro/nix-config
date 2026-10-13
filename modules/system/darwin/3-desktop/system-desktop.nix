@@ -24,22 +24,27 @@
       "stremio"
       "the-unarchiver"
       "whatsapp"
-      "wireshark"
+      "wireshark-app"
     ];
   };
 
-  flake.modules.homeManager.system-desktop =
+  flake.modules.hjem.system-desktop =
     { pkgs, ... }:
     {
-      imports = with inputs.self.modules.homeManager; [
+      imports = with inputs.self.modules.hjem; [
         system-tools
 
         aerospace
         kitty
       ];
 
-      home.packages = with pkgs; [
-        segger-jlink
-      ];
+      packages =
+        (with inputs.self.packages.${pkgs.system}; [
+          aerospace
+          kitty
+        ])
+        ++ (with pkgs; [
+          segger-jlink
+        ]);
     };
 }

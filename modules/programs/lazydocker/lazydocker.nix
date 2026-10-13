@@ -1,16 +1,59 @@
 {
-  flake.modules.homeManager.lazydocker = {
-    programs.lazydocker.enable = true;
+  flake.wrappers.lazydocker =
+    {
+      wlib,
+      pkgs,
+      lib,
+      ...
+    }:
+    let
+      yaml = pkgs.formats.yaml { };
 
-    home.shellAliases = {
-      lzd = "lazydocker";
+      settings = {
+        commandTemplates.dockerCompose = "docker compose";
+
+        gui = {
+          border = "rounded";
+          nerdFontsVersion = "3";
+          timeFormat = "02 Jan 06";
+          shortTimeFormat = "15:04";
+          theme = {
+            activeBorderColor = [
+              "#00e8c6"
+              "bold"
+            ];
+            inactiveBorderColor = [ "#464959" ];
+            searchingActiveBorderColor = [
+              "#00e8c6"
+              "bold"
+            ];
+            optionsTextColor = [ "#7cb7ff" ];
+            selectedLineBgColor = [ "#3a3e4b" ];
+            selectedRangeBgColor = [ "#3a3e4b" ];
+            cherryPickedCommitBgColor = [ "#00e8c6" ];
+            cherryPickedCommitFgColor = [ "#7cb7ff" ];
+            unstagedChangesColor = [ "#ee5d43" ];
+            defaultFgColor = [ "#d5ced9" ];
+          };
+        };
+
+        os.editPreset = "nvim";
+      };
+
+      configDir = pkgs.linkFarm "lazydocker-config" {
+        "config.yml" = yaml.generate "config.yml" settings;
+      };
+    in
+    {
+      imports = [ wlib.modules.default ];
+
+      package = lib.mkDefault pkgs.lazydocker;
+      env.CONFIG_DIR = "${configDir}";
     };
 
-    home.file = {
-      ".config/lazydocker" = {
-        source = ./etc;
-        recursive = true;
-      };
+  flake.wrappers.zsh = {
+    zshAliases = {
+      lzd = "lazydocker";
     };
   };
 }
