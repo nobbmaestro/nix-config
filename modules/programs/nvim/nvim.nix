@@ -4,7 +4,11 @@
 }:
 {
   perSystem =
-    { pkgs, ... }:
+    {
+      pkgs,
+      self',
+      ...
+    }:
     let
       nvim-base = self.wrappers.neovim.wrap { inherit pkgs; };
 
@@ -12,13 +16,12 @@
         name:
         pkgs.writeShellApplication {
           inherit name;
-          runtimeInputs = [ nvim-base ];
+          runtimeInputs = [
+            nvim-base
+            self'.packages.nvim-socket
+          ];
           text = ''
-            if command -v tmux > /dev/null 2>&1; then
-              socket="/tmp/nvim-server-$(tmux display-message -p '#S').sock"
-            else
-              socket="/tmp/nvim-server-default.sock"
-            fi
+            socket="$(nvim-socket)"
 
             if [[ ! -S "$socket" ]]; then
               exec nvim --listen "$socket" "$@"

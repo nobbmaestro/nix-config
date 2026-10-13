@@ -12,21 +12,25 @@ in
       wlib,
       pkgs,
       lib,
+      config,
       ...
     }:
     let
       yaml = pkgs.formats.yaml { };
+    in
+    {
+      imports = [ wlib.modules.default ];
 
-      tmux-nvim-open = pkgs.writeShellApplication {
-        name = "tmux-nvim-open";
-        runtimeInputs = with pkgs; [
-          tmux
-        ];
-        text = builtins.readFile ./bin/tmux-nvim-open;
+      options.settings = lib.mkOption {
+        type = yaml.type;
+        default = { };
       };
 
-      settings = {
-        gui = {
+      config = {
+        package = lib.mkDefault pkgs.lazygit;
+        flags."--use-config-file" = yaml.generate "lazygit-config.yml" config.settings;
+
+        settings.gui = {
           border = "rounded";
           nerdFontsVersion = 3;
           timeFormat = "02 Jan 06";
@@ -50,20 +54,7 @@ in
             defaultFgColor = [ theme.fg ];
           };
         };
-
-        os = {
-          edit = "tmux-nvim-open {{filename}}";
-          editAtLine = "tmux-nvim-open {{filename}} {{line}}";
-          open = "tmux-nvim-open {{filename}}";
-        };
       };
-    in
-    {
-      imports = [ wlib.modules.default ];
-
-      package = lib.mkDefault pkgs.lazygit;
-      runtimePkgs = [ tmux-nvim-open ];
-      flags."--use-config-file" = yaml.generate "lazygit-config.yml" settings;
     };
 
   flake.wrappers.zsh = {

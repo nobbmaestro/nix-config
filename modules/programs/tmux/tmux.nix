@@ -147,19 +147,8 @@
     };
 
   flake.modules.hjem.tmux =
-    { pkgs, ... }:
-    let
-      topen = pkgs.writeShellApplication {
-        name = "topen";
-        runtimeInputs = with pkgs; [
-          tmux
-        ];
-        text = builtins.readFile ./bin/topen;
-      };
-    in
+    { ... }:
     {
-      packages = [ topen ];
-
       xdg.config.files."tmux-tether".source = ./etc/tmux-tether.yml;
     };
 }

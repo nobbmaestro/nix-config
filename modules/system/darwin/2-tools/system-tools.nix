@@ -17,6 +17,7 @@
 
         direnv
         tmux
+        nvim-lazygit-navigation
       ];
 
       packages =

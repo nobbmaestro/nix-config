@@ -14,8 +14,7 @@ fi
 file_to_edit="$1"
 line="${2:-1}"
 
-tmux_session=$(tmux display-message -p '#S')
-socket="/tmp/nvim-server-${tmux_session}.sock"
+socket="$(nvim-socket)"
 command="<cmd>edit +$line $file_to_edit<CR>"
 
 if [ -S "$socket" ]; then
