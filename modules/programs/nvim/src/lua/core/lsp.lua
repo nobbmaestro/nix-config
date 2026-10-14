@@ -9,6 +9,8 @@ vim.lsp.enable({
     "vue_ls",
 })
 
+local vue_plugin_path = os.getenv("VUE_TYPESCRIPT_PLUGIN_PATH")
+
 vim.lsp.config("ts_ls", {
     filetypes = {
         "javascript",
@@ -19,13 +21,13 @@ vim.lsp.config("ts_ls", {
     },
     init_options = {
         hostInfo = "neovim",
-        plugins = {
+        plugins = vue_plugin_path and {
             {
                 name = "@vue/typescript-plugin",
-                location = os.getenv("VUE_TYPESCRIPT_PLUGIN_PATH"),
+                location = vue_plugin_path,
                 languages = { "vue" },
             },
-        },
+        } or nil,
     },
 })
 
