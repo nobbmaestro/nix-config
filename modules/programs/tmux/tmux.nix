@@ -50,6 +50,15 @@
       '';
 
       tmuxTether = inputs.tmux-tether.packages.${pkgs.system}.default;
+
+      zsh = "${self.packages.${pkgs.system}.zsh}/bin/zsh";
+
+      # macOS: reattach so GUI apps spawned from tmux can register with LaunchServices
+      defaultCommand =
+        if pkgs.stdenv.hostPlatform.isDarwin then
+          "${pkgs.reattach-to-user-namespace}/bin/reattach-to-user-namespace -l ${zsh}"
+        else
+          zsh;
     in
     {
       imports = [ wlib.wrapperModules.tmux ];
@@ -80,10 +89,7 @@
       ];
 
       configAfter = ''
-        # macOS: reattach so GUI apps spawned from tmux can register with LaunchServices
-        set-option -g default-command "${pkgs.reattach-to-user-namespace}/bin/reattach-to-user-namespace -l ${
-          self.packages.${pkgs.system}.zsh
-        }/bin/zsh"
+        set-option -g default-command "${defaultCommand}"
 
         # Options
         set-option -g history-file ~/.tmux_history

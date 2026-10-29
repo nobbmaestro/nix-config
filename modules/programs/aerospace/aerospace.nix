@@ -12,6 +12,13 @@
       package = lib.mkDefault pkgs.aerospace;
     };
 
+  # aerospace is macOS-only, so keep it out of `packages.<system>` elsewhere.
+  perSystem =
+    { pkgs, ... }:
+    {
+      wrappers.packages.aerospace = !pkgs.stdenv.hostPlatform.isDarwin;
+    };
+
   flake.modules.hjem.aerospace =
     { pkgs, ... }:
     let
