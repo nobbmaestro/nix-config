@@ -5,7 +5,7 @@
 # Prints the path of the NeoVim server socket for the current Tmux session.
 # The nvim wrapper listens on it, tmux-nvim-open sends to it.
 
-if [ -n "$TMUX" ]; then
+if [ -n "${TMUX:-}" ]; then
 	printf '/tmp/nvim-server-%s.sock\n' "$(tmux display-message -p '#S')"
 else
 	printf '/tmp/nvim-server-default.sock\n'
